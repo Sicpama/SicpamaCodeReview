@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>IndexScroll</title>
+    <style>
+        #main__content1 {
+            background: #fff;
+            position: fixed;
+            z-index: 3;
+            width: 100%;
+            max-width: 1000px;
+            left: 0;
+            right: 0;
+            top: 79px;
+            margin: 0 auto;
+            }
+
+            .quick_menu {
+            padding: 18px;
+            background: #fff;
+            overflow-x: scroll;
+            /* display: flex;
+            justify-content: center; */
+            }
+
+            .quick_menu::-webkit-scrollbar {
+            display: none;
+            }
+
+            .quick_menu li {
+            padding: 0 8px;
+            }
+
+            .quick_menu li a {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e5e5e5;
+            overflow: hidden;
+            color: #000;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            }
+
+            li {
+            display: table-cell;
+            white-space: nowrap;
+            list-style: none;
+            }
+
+            .quick_menu li.on a {
+            background: #f36b37;
+            color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <script>
+        $('a').click(function() {
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top - 140
+            }, 500);
+            return false;
+        });
+
+        // 퀵메뉴
+        $('.quick_menu li a').click(function() {
+            // 버튼 hover 이벤트
+            return false
+            $(this).parent().addClass('on');
+            $(this).parent().siblings().removeClass('on');
+        });
+
+        var sections = $('.target'),
+            nav = $('.quick_menu'),
+            nav_height = nav.outerHeight();
+
+        $(window).on('scroll', function() {
+            var cur_pos = $(this).scrollTop();
+
+            sections.each(function() {
+                var top = $(this).offset().top - nav_height - 140,
+                    bottom = top + $(this).outerHeight();
+                if (cur_pos >= top && cur_pos <= bottom) {
+                    nav.find('a').parent().removeClass('on');
+                    sections.removeClass('active');
+
+                    $(this).parent().addClass('on');
+                    nav.find('a[href="#' + $(this).attr('id') + '"]').parent().addClass('on');
+                }
+            });
+
+        });
+
+        nav.find('a').on('click', function() {
+            var $el = $(this),
+                id = $el.attr('href');
+
+            $('html, body').animate({
+                scrollTop: $(id).offset().top - 140
+            }, 500);
+
+            return false;
+        });
+
+
+      var x,left,down;
+
+      $(".quick_menu").mousedown(function(e){
+        e.preventDefault();
+        down = true;
+        x = e.pageX;
+        left = $(this).scrollLeft();
+      });
+
+      $("#main__content1").mousemove(function(e){
+        if(down){
+          var newX = e.pageX;
+          $(".quick_menu").scrollLeft(left - newX + x);
+        }
+      });
+
+      $("#main__content1").mouseup(function(e){down = false;});
+    </script>
+    <div id = "main__content1">
+        <div class="quick_menu">
+            <li class="on">
+                <a href="#main__content2">추천 메뉴</a>
+            </li>
+            <li>
+                <a href="#main__content3">판매순 랭킹</a>
+            </li>
+            <li>
+                <a href="#menu_title1">세트 메뉴</a>
+            </li>
+            <li>
+                <a href="#menu_title2">스폐셜 요리</a>
+            </li>
+            <li>
+                <a href="#menu_title3">에피타이저</a>
+            </li>
+            <li>
+                <a href="#menu_title4">쌀국수</a>
+            </li>
+            <li>
+                <a href="#menu_title5">볶음면</a>
+            </li>
+            <li>
+                <a href="#menu_title6">볶음밥</a>
+            </li>
+        </div>
+    </div>
+    
+</body>
+</html>

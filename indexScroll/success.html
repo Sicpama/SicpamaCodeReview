@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scroll menu final</title>
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        .main_content1 {
+            overflow-x: auto; 
+            margin:0 auto; 
+            padding: 0 3px;
+            box-sizing: border-box;
+            background: #f36b37; 
+        }
+        .quick_menu {
+            overflow: hidden;
+            font-size: 0; 
+            white-space:nowrap;
+        }
+        .main_item {
+            display: inline-block;
+            width: auto;
+            text-decoration: none;
+        }
+        .main_itemText {
+            display: block; 
+            position: relative; 
+            margin: 0 5px; 
+            height: 47px; 
+            padding: 16px 5px 8px 5px; 
+            box-sizing: border-box; 
+            text-align: center; 
+            white-space: nowrap; 
+            font-size: 1rem; 
+            line-height: 1em; 
+            color: black; }
+        .on .main_itemText { 
+            color: white; 
+            font-weight: bold; 
+            letter-spacing:-.026em;
+        }
+        .on .main_itemText:after {
+            content: ''; 
+            display: block;
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background: white; 
+        }
+    </style>
+</head>
+<body>
+    <div class="main_content1" style="max-width:420px">
+        <div class="quick_menu">
+            <a href="#" class="main_item on">
+                <span class="main_itemText">추천메뉴</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">판매순랭킹</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">스페셜요리</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">에피타이저</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">쌀국수</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">볶음면</span>
+            </a>
+            <a href="#" class="main_item">
+                <span class="main_itemText">볶음밥</span>
+            </a>
+        </div>
+    </div>
+    <script>
+        var $scrItem = $('.main_item');
+                var scrIWidth = 0;
+                for (var i=0; i<$scrItem.length; i++) {
+                    scrIWidth += $scrItem.eq(i).outerWidth();
+                }
+                $('.quick_menu').css('width',scrIWidth)
+                $scrItem.click(function(){
+                    var target = $(this); 
+                    $scrItem.removeClass('on')
+                    target.addClass('on');
+                    muCenter(target);
+                })
+                function muCenter(target){
+                    var box = $('.main_content1');
+                    var boxItem = box.find('.main_item');
+                    var boxHarf = box.width()/2;
+                    var pos;
+                    var listWidth=0;
+                    var targetLeft = 0;
+
+                    boxItem.each(
+                        function(){
+                             listWidth += $(this).outerWidth(); 
+                            }
+                        )    
+                    
+                    for (var i=0; i<target.index(); i++) targetLeft += boxItem.eq(i).outerWidth(); // 선택요소 까지 길이
+                    
+                    var selectTargetPos = (targetLeft + target.outerWidth()/2);
+                    if (selectTargetPos <= boxHarf) { // left
+                        pos = 0;
+                    }else if (listWidth - selectTargetPos <= boxHarf) { //right : target 절반 이후 영역이 boxHarf 보다 작을경우 right 정렬
+                        pos = listWidth-box.width();
+                    }else {
+                        pos = selectTargetPos - boxHarf; // 중앙정렬
+                    }
+                    
+                    setTimeout(function(){
+                        box.animate({scrollLeft:pos},300)
+                    }, 200);
+                }
+    </script>
+</body>
+</html>
